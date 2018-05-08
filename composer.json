@@ -30,7 +30,4 @@
             "CakePdf\\Test\\": "tests"
         }
     },
-    "replace": {
-        "ceeram/cakepdf": "d.version"
-    }
 }
