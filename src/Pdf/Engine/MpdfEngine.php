@@ -13,7 +13,12 @@ class MpdfEngine extends AbstractPdfEngine
      * @return string raw pdf data
      */
     public function output()
-    {
+    {   
+        $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+        $fontDirs = $defaultConfig['fontDir'];
+        $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+        $fontData = $defaultFontConfig['fontdata'];
+        
         $orientation = $this->_Pdf->orientation() === 'landscape' ? 'L' : 'P';
         $format = $this->_Pdf->pageSize();
         if (is_string($format)
@@ -28,6 +33,16 @@ class MpdfEngine extends AbstractPdfEngine
             'format' => $format,
             'orientation' => $orientation,
             'tempDir' => TMP,
+                'fontDir' => array_merge($fontDirs, [
+                    WWW_ROOT . '/fonts',
+                ]),
+                'fontdata' => $fontData + [
+                    "schneidler" => [
+                        'R' => "Schneidler-Light.ttf",
+                        'B' => "Schneidler-Medium.ttf",
+                    ],
+                ],
+                'default_font' => 'schneidler'
         ];
         $options = array_merge($options, (array)$this->getConfig('options'));
 
